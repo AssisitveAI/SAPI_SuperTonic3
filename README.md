@@ -20,7 +20,7 @@ This project wraps the high-quality Supertonic 3 TTS engine in a COM interface v
 
 ### 1. Download Models
 Due to their large size, the ONNX model files are not included in this repository. You must download the Supertonic 3 model files:
-1. Create a folder at `C:\Supertonic\models` (or your preferred installation path).
+1. Create a folder at `C:\Program Files\KAIST Assistive AI Lab\Supertonic SAPI5 Engine\models` (or your preferred installation path).
 2. Download the `.onnx` models from Hugging Face: [Supertone/supertonic-3](https://huggingface.co/Supertone/supertonic-3/tree/main/onnx) and place them in the `models` directory.
 3. Download a Voice Style file (e.g., `M1.json`) and place it in `models\voice_styles\`.
 
