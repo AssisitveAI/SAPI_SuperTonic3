@@ -1,30 +1,60 @@
 # SAPI_SuperTonic3
 
-Windows SAPI5 Text-to-Speech (TTS) engine using the lightning-fast Supertonic TTS model (via ONNX Runtime).
+A SAPI 5 (Speech Application Programming Interface) compatible Text-to-Speech (TTS) engine for Windows, powered by the [Supertonic 3](https://supertonictts.com/) ONNX model.
 
-## Overview
-
-This project aims to bridge the modern Supertonic TTS engine with standard Windows applications by implementing a SAPI 5 COM interface. This enables screen readers (like NVDA, JAWS) and other standard Windows TTS consumers to utilize the Supertonic voice seamlessly on your local machine.
+This project wraps the high-quality Supertonic 3 TTS engine in a COM interface via `.NET 8 COM Hosting`, allowing it to be used by any Windows screen reader (e.g., NVDA, JAWS) or TTS application that relies on SAPI 5.
 
 ## Architecture
 
-- **SAPI 5 Interface**: Implemented in C# via COM Interop (or C++).
-- **Inference Engine**: ONNX Runtime.
-- **Model**: Supertonic TTS (Speech Autoencoder, Text-to-Latent, Duration Predictor).
+* **Core**: `Supertonic.SAPI5.Core` (.NET 8.0)
+  * Implements `System.Speech.Synthesis.TtsEngine.TtsEngineSsml` to integrate with SAPI 5.
+  * Utilizes `Microsoft.ML.OnnxRuntime` to perform fast, offline inference using Supertonic's `ConvNeXt` models.
+* **Test Console**: `Supertonic.SAPI5.TestConsole`
+  * A command-line utility for testing synthesis quality and latency without needing full SAPI registration.
 
-## Development Roadmap
+## Getting Started
 
-1. **Phase 1**: Core Inference Testing (Supertonic ONNX in C#)
-2. **Phase 2**: SAPI 5 COM Interface Implementation
-3. **Phase 3**: Windows Registry Registration
-4. **Phase 4**: Refinement and Audio Control (Rate/Volume/Pitch mapping)
+### 1. Download Models
+Due to their large size, the ONNX model files are not included in this repository. You must download the Supertonic 3 model files and place them in the correct directory.
+1. Create a folder at `C:\Supertonic\models`.
+2. Download the `.onnx` models from Hugging Face: [Supertone/supertonic-3](https://huggingface.co/Supertone/supertonic-3/tree/main/onnx) and place them in `C:\Supertonic\models`.
+3. Download a Voice Style file (e.g., `M1.json`) and place it in `C:\Supertonic\models\voice_styles\`.
 
-## Prerequisites
+### 2. Build the Project
+Because this is a SAPI 5 COM component, you must build it specifically for Windows.
 
-- Windows SDK
-- .NET Framework 4.8 / .NET 6+
-- ONNX Runtime (`Microsoft.ML.OnnxRuntime`)
+```bash
+# Build the core library in Release mode
+dotnet build Supertonic.SAPI5.Core -c Release
+```
 
-## License
+### 3. Registering the SAPI Engine (Windows Only)
+When built on Windows, .NET 8 creates a `Supertonic.SAPI5.Core.comhost.dll` which acts as the unmanaged bridge for SAPI.
 
-MIT License (Subject to Supertonic TTS model licensing)
+1. Open an **Administrator Command Prompt**.
+2. Navigate to the project root directory.
+3. Run `Install-SAPI.bat`:
+   ```cmd
+   Install-SAPI.bat
+   ```
+4. This script will run `regsvr32` and trigger our `[ComRegisterFunction]` which safely inserts the SAPI Voice Token into the Windows Registry at:
+   `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\SupertonicVoice`
+
+### 4. Usage
+Once registered, the voice will appear as **"Supertonic Voice (Korean)"** in your Windows Text-to-Speech settings and in screen readers like NVDA.
+
+To unregister and remove it, simply run:
+```cmd
+Uninstall-SAPI.bat
+```
+
+## Development & Testing
+You can use the Test Console to debug synthesis logic before registering the engine:
+```bash
+cd Supertonic.SAPI5.TestConsole
+dotnet run
+```
+This will produce an `output.wav` file to verify the audio quality.
+
+## Notice
+The ONNX models and the core inference methodology belong to Supertone Inc. This wrapper is simply a bridge to utilize these models seamlessly within the Windows accessibility ecosystem.
