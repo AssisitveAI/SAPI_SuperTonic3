@@ -4,7 +4,7 @@
 [Setup]
 AppName=Supertonic SAPI5 Engine
 AppVersion=1.0
-AppPublisher=AssistiveAI
+AppPublisher=KAIST Assistive AI Lab
 DefaultDirName={pf}\Supertonic
 DefaultGroupName=Supertonic SAPI5 Engine
 OutputDir=InstallerOutput
