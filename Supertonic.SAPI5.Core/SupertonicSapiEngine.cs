@@ -28,9 +28,15 @@ namespace Supertonic.SAPI5.Core
 
         public SupertonicSapiEngine() : base("")
         {
-            // Models and styles path setup
-            string modelsDir = @"C:\Supertonic\models";
-            string stylePath = @"C:\Supertonic\models\voice_styles\M1.json";
+            // Dynamically resolve models directory relative to where this DLL is installed
+            string assemblyPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string baseDir = Path.GetDirectoryName(assemblyPath) ?? @"C:\Supertonic\bin";
+            
+            // Assume the installer places 'models' directory at the same level as 'bin'
+            // or inside the same directory. Let's point to the parent directory's 'models' folder.
+            string rootDir = Directory.GetParent(baseDir)?.FullName ?? baseDir;
+            string modelsDir = Path.Combine(rootDir, "models");
+            string stylePath = Path.Combine(modelsDir, "voice_styles", "M1.json");
             
             _lang = "ko"; 
 
