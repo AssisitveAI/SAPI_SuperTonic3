@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Authors>KAIST Assistive AI Lab</Authors>
-    <Company>KAIST Assistive AI Lab</Company>
+    <Authors>KAIST Assistive AI Lab (재활인공지능연구실)</Authors>
+    <Company>KAIST Assistive AI Lab (재활인공지능연구실)</Company>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
     <EnableComHosting>true</EnableComHosting>

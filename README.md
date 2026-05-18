@@ -1,12 +1,12 @@
 # Supertonic SAPI 5 Engine
-**Developed by KAIST Assistive AI Lab**
+**Developed by KAIST Assistive AI Lab (재활인공지능연구실)**
 
 A SAPI 5 (Speech Application Programming Interface) compatible Text-to-Speech (TTS) engine for Windows, powered by the open-source [Supertonic 3](https://supertonictts.com/) ONNX model from Supertone Inc.
 
 This project wraps the high-quality Supertonic 3 TTS engine in a COM interface via `.NET 8 COM Hosting`. This allows it to be used by any Windows screen reader (e.g., NVDA, JAWS, Narrator) or accessibility application that relies on SAPI 5, drastically improving the quality of synthetic voices available to visually impaired users.
 
 ## Acknowledgements & Licensing
-* **SAPI Wrapper Code**: Developed and maintained by KAIST Assistive AI Lab (MIT License).
+* **SAPI Wrapper Code**: Developed and maintained by KAIST Assistive AI Lab (재활인공지능연구실) (MIT License).
 * **Supertonic 3 Core**: The underlying TTS architecture, `Helper.cs` components, and ONNX models are developed by **Supertone Inc.** (MIT License for code, refer to Supertone's official repository for model licensing terms).
 
 ## Architecture
